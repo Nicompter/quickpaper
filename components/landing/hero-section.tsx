@@ -1,38 +1,20 @@
-'use client';
-
-import { useState } from 'react';
-import { useI18n } from '@/lib/i18n-context';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Copy, Check, ArrowRight, Sparkles } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import posthog from 'posthog-js';
+import { Button } from '@/components/ui/button';
+import { CopyButton } from '@/components/copy-button';
+import { ArrowRight, Sparkles } from 'lucide-react';
+import { Translations } from '@/lib/i18n';
 
-export function HeroSection() {
-    const { t } = useI18n();
-    const [copied, setCopied] = useState(false);
+interface HeroSectionProps {
+    t: Translations;
+}
 
-    const copyToClipboard = async () => {
-        await navigator.clipboard.writeText(t.hero.installCommand);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-
-        // PostHog: Track install command copied from hero section
-        posthog.capture('install_command_copied', {
-            command: t.hero.installCommand,
-            source: 'hero_section',
-        });
-    };
-
+export function HeroSection({ t }: HeroSectionProps) {
     return (
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
             {/* Animated Background */}
             <div className="absolute inset-0 -z-10">
-                {/* Gradient Orbs */}
                 <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/30 rounded-full blur-3xl animate-pulse" />
                 <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-pulse delay-1000" />
-
-                {/* Grid Pattern */}
                 <div
                     className="absolute inset-0 opacity-[0.02]"
                     style={{
@@ -81,37 +63,13 @@ export function HeroSection() {
 
                     {/* CTA Buttons */}
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-                        <Button
-                            size="lg"
-                            className="w-full sm:w-auto group"
-                            asChild
-                            onClick={() => {
-                                // PostHog: Track CTA button click
-                                posthog.capture('cta_button_clicked', {
-                                    button_text: t.hero.cta,
-                                    destination: '#installation',
-                                    source: 'hero_section',
-                                });
-                            }}
-                        >
+                        <Button size="lg" className="w-full sm:w-auto group" asChild>
                             <a href="#installation">
                                 {t.hero.cta}
                                 <ArrowRight className="size-4 ml-2 group-hover:translate-x-1 transition-transform" />
                             </a>
                         </Button>
-                        <Button
-                            variant="outline"
-                            size="lg"
-                            className="w-full sm:w-auto"
-                            asChild
-                            onClick={() => {
-                                // PostHog: Track GitHub link click
-                                posthog.capture('github_link_clicked', {
-                                    source: 'hero_section',
-                                    destination: 'https://github.com/Nicompter/quickpaper',
-                                });
-                            }}
-                        >
+                        <Button variant="outline" size="lg" className="w-full sm:w-auto" asChild>
                             <a href="https://github.com/Nicompter/quickpaper" target="_blank" rel="noopener noreferrer">
                                 {t.hero.ctaSecondary}
                             </a>
@@ -120,43 +78,11 @@ export function HeroSection() {
 
                     {/* Install Command */}
                     <div className="max-w-xl mx-auto">
-                        <div
-                            className={cn(
-                                "group relative flex items-center gap-3 bg-card border border-border rounded-xl p-4 font-mono text-sm cursor-pointer transition-all hover:border-primary/50",
-                                copied && "border-green-500/50"
-                            )}
-                            onClick={copyToClipboard}
-                        >
-                            <span className="text-muted-foreground select-none">$</span>
-                            <code className="flex-1 text-left text-foreground truncate">
-                                {t.hero.installCommand}
-                            </code>
-                            <Button
-                                variant="ghost"
-                                size="icon-sm"
-                                className="shrink-0"
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    copyToClipboard();
-                                }}
-                            >
-                                {copied ? (
-                                    <Check className="size-4 text-green-500" />
-                                ) : (
-                                    <Copy className="size-4" />
-                                )}
-                            </Button>
-
-                            {/* Tooltip */}
-                            <span
-                                className={cn(
-                                    "absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-foreground text-background text-xs rounded-lg opacity-0 transition-opacity",
-                                    copied && "opacity-100"
-                                )}
-                            >
-                                {t.hero.copied}
-                            </span>
-                        </div>
+                        <CopyButton
+                            text={t.hero.installCommand}
+                            copiedText={t.hero.copied}
+                            source="hero_section"
+                        />
                     </div>
                 </div>
             </div>

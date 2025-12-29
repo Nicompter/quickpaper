@@ -1,12 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { useI18n } from '@/lib/i18n-context';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Copy, Check, MessageSquare, Rocket, Settings, Monitor, Apple, Laptop } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import posthog from 'posthog-js';
+import { Translations } from '@/lib/i18n';
 
 type InstallMode = 'interactive' | 'quick' | 'custom';
 type Platform = 'linux' | 'macos' | 'windows';
@@ -29,8 +29,11 @@ const platformCommands: Record<Platform, Record<InstallMode, string>> = {
   },
 };
 
-export function InstallationSection() {
-  const { t } = useI18n();
+interface InstallationSectionProps {
+  t: Translations;
+}
+
+export function InstallationSection({ t }: InstallationSectionProps) {
   const [copiedCommand, setCopiedCommand] = useState<string | null>(null);
   const [activeMode, setActiveMode] = useState<InstallMode>('interactive');
   const [activePlatform, setActivePlatform] = useState<Platform>('linux');
@@ -40,7 +43,6 @@ export function InstallationSection() {
     setCopiedCommand(command);
     setTimeout(() => setCopiedCommand(null), 2000);
 
-    // PostHog: Track installation command copied
     posthog.capture('installation_command_copied', {
       command: command,
       mode: activeMode,
@@ -63,6 +65,7 @@ export function InstallationSection() {
 
   const shellPrompt = activePlatform === 'windows' ? 'PS>' : '$';
   const shellType = activePlatform === 'windows' ? 'PowerShell' : 'bash';
+  const isDE = t.hero.cta === 'Jetzt starten';
 
   return (
     <section id="installation" className="py-24 bg-muted/30">
@@ -86,7 +89,6 @@ export function InstallationSection() {
               size="sm"
               onClick={() => {
                 setActivePlatform(key);
-                // PostHog: Track platform selection
                 posthog.capture('platform_selected', {
                   platform: key,
                   source: 'installation_section',
@@ -108,7 +110,6 @@ export function InstallationSection() {
               variant={activeMode === key ? 'default' : 'outline'}
               onClick={() => {
                 setActiveMode(key);
-                // PostHog: Track installation mode selection
                 posthog.capture('installation_mode_selected', {
                   mode: key,
                   mode_title: data.title,
@@ -184,16 +185,14 @@ export function InstallationSection() {
 
         {/* Terminal Demo */}
         <div className="max-w-3xl mx-auto mt-12">
-          <TerminalDemo platform={activePlatform} />
+          <TerminalDemo platform={activePlatform} isDE={isDE} />
         </div>
       </div>
     </section>
   );
 }
 
-function TerminalDemo({ platform }: { platform: Platform }) {
-  const { locale } = useI18n();
-  const isDE = locale === 'de';
+function TerminalDemo({ platform, isDE }: { platform: Platform; isDE: boolean }) {
   const isWindows = platform === 'windows';
   const shellType = isWindows ? 'PowerShell' : 'bash';
   const prompt = isWindows ? 'PS C:\\Users\\User>' : '~$';
@@ -210,9 +209,9 @@ function TerminalDemo({ platform }: { platform: Platform }) {
       {/* Terminal Header */}
       <div className="bg-card px-4 py-3 flex items-center gap-2 border-b border-border">
         <div className="flex gap-2">
-          <div className={cn("w-3 h-3 rounded-full", isWindows ? "bg-red-500" : "bg-red-500")} />
-          <div className={cn("w-3 h-3 rounded-full", isWindows ? "bg-yellow-500" : "bg-yellow-500")} />
-          <div className={cn("w-3 h-3 rounded-full", isWindows ? "bg-green-500" : "bg-green-500")} />
+          <div className="w-3 h-3 rounded-full bg-red-500" />
+          <div className="w-3 h-3 rounded-full bg-yellow-500" />
+          <div className="w-3 h-3 rounded-full bg-green-500" />
         </div>
         <span className="text-xs text-muted-foreground ml-2 font-mono">{shellType}</span>
       </div>

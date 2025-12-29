@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
-import { I18nProvider } from "@/lib/i18n-context";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { getLocale } from "@/lib/get-locale";
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -34,21 +34,21 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+  
   return (
-    <html lang="en" className={inter.variable} suppressHydrationWarning>
+    <html lang={locale} className={inter.variable} suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <I18nProvider>
-          <ThemeProvider attribute="class" defaultTheme="system">
-            {children}
-          </ThemeProvider>
-        </I18nProvider>
+        <ThemeProvider attribute="class" defaultTheme="system">
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -1,6 +1,3 @@
-'use client';
-
-import { useI18n } from '@/lib/i18n-context';
 import { Card, CardContent } from '@/components/ui/card';
 import { 
   Terminal, 
@@ -11,6 +8,7 @@ import {
   Monitor 
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Translations } from '@/lib/i18n';
 
 const featureIcons = {
   oneCommand: Terminal,
@@ -32,9 +30,11 @@ const featureColors = {
 
 type FeatureKey = keyof typeof featureIcons;
 
-export function FeaturesSection() {
-  const { t } = useI18n();
+interface FeaturesSectionProps {
+  t: Translations;
+}
 
+export function FeaturesSection({ t }: FeaturesSectionProps) {
   const features: { key: FeatureKey; data: { title: string; description: string } }[] = [
     { key: 'oneCommand', data: t.features.oneCommand },
     { key: 'interactive', data: t.features.interactive },
@@ -80,12 +80,12 @@ export function FeaturesSection() {
                 <CardContent className="p-6">
                   {/* Icon */}
                   <div className={cn(
-                    "relative w-12 h-12 rounded-xl bg-linear-to-br flex items-center justify-center mb-4",
+                    "relative w-12 h-12 rounded-xl bg-gradient-to-br flex items-center justify-center mb-4",
                     colorClass
                   )}>
                     <Icon className="size-6 text-white" />
                     <div className={cn(
-                      "absolute inset-0 rounded-xl bg-linear-to-br opacity-0 group-hover:opacity-20 blur-xl transition-opacity",
+                      "absolute inset-0 rounded-xl bg-gradient-to-br opacity-0 group-hover:opacity-20 blur-xl transition-opacity",
                       colorClass
                     )} />
                   </div>

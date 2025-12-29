@@ -1,9 +1,8 @@
-'use client';
-
 import Link from 'next/link';
-import { useI18n } from '@/lib/i18n-context';
+import { getLocale } from '@/lib/get-locale';
 import { Navbar } from '@/components/landing/navbar';
 import { Footer } from '@/components/landing/footer';
+import { getTranslations } from '@/lib/i18n';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
@@ -296,10 +295,7 @@ const supportedPlatforms = [
   },
 ];
 
-function ParameterTable({ parameters, shell }: { parameters: ParameterInfo[]; shell: 'bash' | 'powershell' }) {
-  const { locale } = useI18n();
-  const isDE = locale === 'de';
-
+function ParameterTable({ parameters, isDE }: { parameters: ParameterInfo[]; isDE: boolean }) {
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
@@ -353,13 +349,14 @@ function CodeBlock({ children, title }: { children: string; title?: string }) {
   );
 }
 
-export default function DocsPage() {
-  const { locale } = useI18n();
+export default async function DocsPage() {
+  const locale = await getLocale();
+  const t = getTranslations(locale);
   const isDE = locale === 'de';
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      <Navbar t={t} locale={locale} />
       
       <main className="pt-24 pb-16">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -520,7 +517,7 @@ export default function DocsPage() {
             
             <Card>
               <CardContent className="p-0">
-                <ParameterTable parameters={bashParameters} shell="bash" />
+                <ParameterTable parameters={bashParameters} isDE={isDE} />
               </CardContent>
             </Card>
           </section>
@@ -541,7 +538,7 @@ export default function DocsPage() {
             
             <Card>
               <CardContent className="p-0">
-                <ParameterTable parameters={powershellParameters} shell="powershell" />
+                <ParameterTable parameters={powershellParameters} isDE={isDE} />
               </CardContent>
             </Card>
           </section>
@@ -828,7 +825,7 @@ curl -fsSL "https://quickpaper.nicompter.de/install?lang=en" | bash`}
         </div>
       </main>
       
-      <Footer />
+      <Footer t={t} />
     </div>
   );
 }
