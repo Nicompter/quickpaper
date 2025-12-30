@@ -16,6 +16,7 @@ export function Navbar({ t, locale }: NavbarProps) {
     { href: '#installation', label: t.nav.installation },
     { href: '/docs', label: t.nav.docs },
     { href: 'https://github.com/Nicompter/quickpaper', label: t.nav.github, external: true },
+    { href: 'https://discord.com/invite/Z2mgRjB9CY', label: t.nav.discord, external: true },
   ];
 
   return (

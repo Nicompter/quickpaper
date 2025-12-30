@@ -7,6 +7,7 @@ export const translations = {
       installation: 'Installation',
       docs: 'Dokumentation',
       github: 'GitHub',
+      discord: 'Discord',
     },
     hero: {
       badge: 'Open Source',
@@ -93,6 +94,7 @@ export const translations = {
       installation: 'Installation',
       docs: 'Documentation',
       github: 'GitHub',
+      discord: 'Discord',
     },
     hero: {
       badge: 'Open Source',

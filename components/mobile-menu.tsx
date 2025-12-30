@@ -29,7 +29,7 @@ export function MobileMenu({ links, ctaText }: MobileMenuProps) {
       <div
         className={cn(
           'absolute top-16 left-0 right-0 bg-background/95 backdrop-blur-lg border-b border-border md:hidden overflow-hidden transition-all duration-300',
-          isOpen ? 'max-h-64 py-4' : 'max-h-0'
+          isOpen ? 'max-h-80 py-4' : 'max-h-0'
         )}
       >
         <div className="flex flex-col gap-2 px-4">

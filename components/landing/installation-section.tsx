@@ -135,8 +135,8 @@ export function InstallationSection({ t }: InstallationSectionProps) {
                 activeMode === key ? 'opacity-100 scale-100' : 'hidden'
               )}
             >
-              <CardContent className="p-8">
-                <div className="flex items-start gap-4 mb-6">
+              <CardContent className="p-4 sm:p-6 md:p-8">
+                <div className="flex items-start gap-3 sm:gap-4 mb-6">
                   <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
                     <Icon className="size-6 text-primary" />
                   </div>
@@ -155,11 +155,11 @@ export function InstallationSection({ t }: InstallationSectionProps) {
 
                 {/* Command Box */}
                 <div 
-                  className="group relative flex items-center gap-3 bg-background border border-border rounded-xl p-4 font-mono text-sm cursor-pointer transition-all hover:border-primary/50"
+                  className="group relative flex items-start sm:items-center gap-2 sm:gap-3 bg-background border border-border rounded-xl p-3 sm:p-4 font-mono text-xs sm:text-sm cursor-pointer transition-all hover:border-primary/50"
                   onClick={() => copyCommand(data.command)}
                 >
-                  <span className="text-primary select-none">{shellPrompt}</span>
-                  <code className="flex-1 text-foreground break-all">
+                  <span className="text-primary select-none shrink-0">{shellPrompt}</span>
+                  <code className="flex-1 text-foreground break-all overflow-hidden">
                     {data.command}
                   </code>
                   <Button 
@@ -183,8 +183,8 @@ export function InstallationSection({ t }: InstallationSectionProps) {
           ))}
         </div>
 
-        {/* Terminal Demo */}
-        <div className="max-w-3xl mx-auto mt-12">
+        {/* Terminal Demo - hidden on mobile for better UX */}
+        <div className="hidden sm:block max-w-3xl mx-auto mt-12">
           <TerminalDemo platform={activePlatform} isDE={isDE} />
         </div>
       </div>
