@@ -1,12 +1,10 @@
 # Quickpaper Paper Server Installer for Windows
 # PowerShell 5.1+ required
+# Works with: irm https://quickpaper.nicompter.de/install | iex
+#             .\start.ps1 [options]
 
-$ErrorActionPreference = "Stop"
-$ProgressPreference = "SilentlyContinue"
-
-$VERSION = "0.1.0"
-
-# Configuration (can be overridden by parameters)
+# Wrap everything in a function to support both direct execution and iex piping
+& {
 param(
     [string]$Dir = "$env:USERPROFILE\paper-server",
     [string]$MCVersion = "",
@@ -22,6 +20,11 @@ param(
     [string]$Lang = "",
     [switch]$Help
 )
+
+$ErrorActionPreference = "Stop"
+$ProgressPreference = "SilentlyContinue"
+
+$VERSION = "0.1.0"
 
 # Allow server /install to pre-set LANG_OVERRIDE
 $LANG_OVERRIDE = if ($env:LANG_OVERRIDE) { $env:LANG_OVERRIDE } else { $Lang }
@@ -580,7 +583,7 @@ pause
     Write-Host "============================================"
     Write-ColorLine (T "done") "Green"
     Write-Host "$(T 'summary_dir') $absPath"
-    Write-Host "$(T 'summary_start') cd `"$absPath`" && .\start.ps1  (or double-click start.bat)"
+    Write-Host "$(T 'summary_start') start.bat"
     Write-Host "$(T 'summary_port') $Port"
     Write-Host "$(T 'summary_ram') $MinRam - $MaxRam"
     Write-Host "$(T 'summary_minecraft') $MCVersion (build $build)"
@@ -597,3 +600,4 @@ pause
 }
 
 Main
+} @args
