@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Copy, Check } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import posthog from 'posthog-js';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Copy, Check } from "lucide-react";
+import { cn } from "@/lib/utils";
+import posthog from "posthog-js";
 
 interface CopyButtonProps {
   text: string;
@@ -20,7 +20,7 @@ export function CopyButton({ text, copiedText, source }: CopyButtonProps) {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
 
-    posthog.capture('install_command_copied', {
+    posthog.capture("install_command_copied", {
       command: text,
       source,
     });
@@ -29,13 +29,13 @@ export function CopyButton({ text, copiedText, source }: CopyButtonProps) {
   return (
     <div
       className={cn(
-        "group relative flex items-center gap-3 bg-card border border-border rounded-xl p-4 font-mono text-sm cursor-pointer transition-all hover:border-primary/50",
+        "group relative flex items-center gap-2 sm:gap-3 bg-card border border-border rounded-xl p-3 sm:p-4 font-mono text-xs sm:text-sm cursor-pointer transition-all hover:border-primary/50",
         copied && "border-green-500/50"
       )}
       onClick={copyToClipboard}
     >
-      <span className="text-muted-foreground select-none">$</span>
-      <code className="flex-1 text-left text-foreground truncate">
+      <span className="text-muted-foreground select-none shrink-0">$</span>
+      <code className="flex-1 text-left text-foreground break-all sm:truncate overflow-hidden">
         {text}
       </code>
       <Button

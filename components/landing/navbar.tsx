@@ -1,9 +1,9 @@
-import Link from 'next/link';
-import { Zap } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { LanguageSwitcher } from '@/components/language-switcher';
-import { MobileMenu } from '@/components/mobile-menu';
-import { Translations, Locale } from '@/lib/i18n';
+import Link from "next/link";
+import { Zap } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { LanguageSwitcher } from "@/components/language-switcher";
+import { MobileMenu } from "@/components/mobile-menu";
+import { Translations, Locale } from "@/lib/i18n";
 
 interface NavbarProps {
   t: Translations;
@@ -12,11 +12,19 @@ interface NavbarProps {
 
 export function Navbar({ t, locale }: NavbarProps) {
   const navLinks = [
-    { href: '#features', label: t.nav.features },
-    { href: '#installation', label: t.nav.installation },
-    { href: '/docs', label: t.nav.docs },
-    { href: 'https://github.com/Nicompter/quickpaper', label: t.nav.github, external: true },
-    { href: 'https://discord.com/invite/Z2mgRjB9CY', label: t.nav.discord, external: true },
+    { href: "#features", label: t.nav.features },
+    { href: "#installation", label: t.nav.installation },
+    { href: "/docs", label: t.nav.docs },
+    {
+      href: "https://github.com/Nicompter/quickpaper",
+      label: t.nav.github,
+      external: true,
+    },
+    {
+      href: "https://discord.com/invite/Z2mgRjB9CY",
+      label: t.nav.discord,
+      external: true,
+    },
   ];
 
   return (
@@ -40,8 +48,8 @@ export function Navbar({ t, locale }: NavbarProps) {
               <Link
                 key={link.href}
                 href={link.href}
-                target={link.external ? '_blank' : undefined}
-                rel={link.external ? 'noopener noreferrer' : undefined}
+                target={link.external ? "_blank" : undefined}
+                rel={link.external ? "noopener noreferrer" : undefined}
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 {link.label}
